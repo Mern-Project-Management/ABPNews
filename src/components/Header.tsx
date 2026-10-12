@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  Tv, Search, Menu, X, Globe, Smartphone, ChevronRight, 
+import {
+  Tv, Search, Menu, X, Globe, Smartphone, ChevronRight,
   Pause, Play, Flame, Sun, ArrowUpRight, ArrowDownRight,
   MoreHorizontal
 } from 'lucide-react';
@@ -23,7 +23,7 @@ interface HeaderProps {
 
 import { useRouter, usePathname } from 'next/navigation';
 
-export default function Header({ categories, ticker = [], tickerArticles = [], marketTicker, weatherData, onOpenLiveTV = () => {}, onOpenSearch = () => {}, activeCategory = '', onSelectCategory }: HeaderProps) {
+export default function Header({ categories, ticker = [], tickerArticles = [], marketTicker, weatherData, onOpenLiveTV = () => { }, onOpenSearch = () => { }, activeCategory = '', onSelectCategory }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -41,11 +41,32 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
   };
 
   const [currentDateTime, setCurrentDateTime] = useState('');
+  const [logoUrl, setLogoUrl] = useState('/logoupdate.png');
+
+  useEffect(() => {
+    // Dynamically load updated logo if configured in admin
+    const loadDynamicLogo = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/settings');
+        const data = await res.json();
+        if (data.success && data.settings?.logoUrl) {
+          // If local upload path on admin, route to admin origin
+          const url = data.settings.logoUrl.startsWith('/uploads/')
+            ? `http://localhost:3001${data.settings.logoUrl}`
+            : data.settings.logoUrl;
+          setLogoUrl(url);
+        }
+      } catch (err) {
+        // keep fallback
+      }
+    };
+    loadDynamicLogo();
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const options: Intl.DateTimeFormatOptions = { 
+      const options: Intl.DateTimeFormatOptions = {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
         hour: '2-digit', minute: '2-digit', second: '2-digit'
       };
@@ -63,7 +84,7 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
 
   return (
     <header className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40 transition-colors">
-      
+
       {/* 1. TOP UTILITY BAR */}
       <div className="bg-[#051118] text-gray-300 py-1.5 px-4 sm:px-6 flex items-center justify-end text-[11px] font-medium tracking-wide">
         <div className="flex items-center space-x-2">
@@ -72,11 +93,11 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
       </div>
 
       {/* 2. MAIN NAVBAR */}
-      <div className="bg-white px-4 sm:px-8 py-3 flex items-center justify-between shadow-sm relative">
+      <div className="bg-white px-4 sm:px-8 py-2 sm:py-2.5 flex items-center justify-between shadow-xs border-b border-gray-100 relative">
         {/* LOGO & MOBILE TOGGLE */}
         <div className="flex items-center shrink-0">
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             className="lg:hidden p-1 mr-3 text-gray-700"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -84,8 +105,12 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
           </button>
 
           {/* LOGO */}
-          <Link href="/" className="shrink-0 flex items-center">
-            <img src="/logo1.png" alt="Metrotimes" className="h-9 sm:h-14 object-contain" />
+          <Link href="/" className="shrink-0 flex items-center py-0.5">
+            <img
+              src={logoUrl}
+              alt="Metrotimes"
+              className="h-7 sm:h-8 md:h-[34px] w-auto max-w-[160px] sm:max-w-[180px] object-contain transition-opacity duration-150 hover:opacity-90"
+            />
           </Link>
         </div>
 
@@ -107,7 +132,7 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
 
         {/* SEARCH BUTTON */}
         <div className="flex items-center space-x-3 shrink-0">
-          <button 
+          <button
             onClick={onOpenSearch}
             className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3.5 py-1.5 rounded-full text-xs font-medium text-gray-700 border border-gray-200 transition-colors"
           >
@@ -149,11 +174,10 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
                   key={cat.id}
                   href={cat.slug}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-3 py-2 rounded font-semibold capitalize text-center transition-colors ${
-                    isActive 
-                      ? 'bg-red-50 text-[#E30613] border border-red-200' 
+                  className={`px-3 py-2 rounded font-semibold capitalize text-center transition-colors ${isActive
+                      ? 'bg-red-50 text-[#E30613] border border-red-200'
                       : 'bg-gray-100 text-gray-800 hover:bg-red-600 hover:text-white'
-                  }`}
+                    }`}
                 >
                   {cat.name}
                 </Link>

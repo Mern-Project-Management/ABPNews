@@ -78,19 +78,9 @@
       "slug": "/category/sports"
     },
     {
-      "id": "lifestyle",
-      "name": "Lifestyle",
-      "slug": "/category/lifestyle"
-    },
-    {
       "id": "technology",
       "name": "Technology",
       "slug": "/category/technology"
-    },
-    {
-      "id": "elections",
-      "name": "Elections",
-      "slug": "/category/elections"
     }
   ],
   "pastDates": [

@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LiveTVModal from '@/components/LiveTVModal';
 import SearchModal from '@/components/SearchModal';
-import { getNewsData, getArticleByIdOrSlug, getArticleUrl } from '@/lib/getNewsData';
+import { getNewsData, getArticleByIdOrSlug, getArticleUrl, fetchLiveArticleBySlug, Article, NewsDataset, fetchLiveNewsDataset } from '@/lib/getNewsData';
 import { 
   Clock, Share2, ThumbsUp, Flame, ChevronRight, 
   Bookmark, MessageSquare, Volume2, Type
@@ -18,7 +18,20 @@ interface ArticlePageProps {
 
 export default function ArticlePage({ params }: ArticlePageProps) {
   const { category, slug } = use(params);
-  const newsData = getNewsData();
+  const [newsData, setNewsData] = useState<NewsDataset>(getNewsData());
+  const [article, setArticle] = useState<Article>(getArticleByIdOrSlug(slug) || getNewsData().leadStory);
+
+  React.useEffect(() => {
+    const loadData = async () => {
+      const [liveData, liveArt] = await Promise.all([
+        fetchLiveNewsDataset(),
+        fetchLiveArticleBySlug(slug),
+      ]);
+      if (liveData) setNewsData(liveData);
+      if (liveArt) setArticle(liveArt);
+    };
+    loadData();
+  }, [slug]);
 
   const [isLiveTVOpen, setIsLiveTVOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -26,9 +39,8 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   const [likes, setLikes] = useState(42);
   const [hasLiked, setHasLiked] = useState(false);
 
-  const article = getArticleByIdOrSlug(slug) || newsData.leadStory;
   const relatedArticles = newsData.allArticles
-    .filter(a => a.id !== article.id)
+    .filter(a => a.id !== article.id && a.slug !== article.slug)
     .slice(0, 5);
 
   const handleLike = () => {

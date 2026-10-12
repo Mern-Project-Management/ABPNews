@@ -11,6 +11,25 @@ interface FooterProps {
 
 export default function Footer({ categories }: FooterProps) {
   const displayCategories = categories.slice(0, 8);
+  const [logoUrl, setLogoUrl] = React.useState('/logoupdate.png');
+
+  React.useEffect(() => {
+    const loadDynamicLogo = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/settings');
+        const data = await res.json();
+        if (data.success && data.settings?.logoUrl) {
+          const url = data.settings.logoUrl.startsWith('/uploads/')
+            ? `http://localhost:3001${data.settings.logoUrl}`
+            : data.settings.logoUrl;
+          setLogoUrl(url);
+        }
+      } catch (e) {
+        // keep fallback
+      }
+    };
+    loadDynamicLogo();
+  }, []);
 
   return (
     <footer className="bg-[#0a1d28] text-gray-400 border-t-4 border-red-600">
@@ -20,8 +39,8 @@ export default function Footer({ categories }: FooterProps) {
 
         {/* SECTION 1: BRAND COL */}
         <div className="space-y-3">
-          <Link href="/" className="inline-block bg-white px-3 py-2 rounded shadow-sm">
-            <img src="/logo1.png" alt="Metrotimes" className="h-9 object-contain" />
+          <Link href="/" className="inline-block bg-white px-3 py-1.5 rounded shadow-sm hover:opacity-95 transition-opacity">
+            <img src={logoUrl} alt="Metrotimes" className="h-7 sm:h-8 max-w-[170px] w-auto object-contain" />
           </Link>
           <p className="text-xs text-gray-400 leading-relaxed">
             Metrotimes is India&apos;s leading digital news destination bringing real-time breaking news updates, political coverage, sports, entertainment, and ground reports.

@@ -13,6 +13,11 @@ export interface Article {
   readTime: string;
   summary: string;
   content: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  canonicalUrl?: string;
+  schemaScript?: string;
 }
 
 export interface VideoItem {
@@ -99,14 +104,21 @@ export function getNewsData(): NewsDataset {
 
 export function getArticleUrl(article: Article): string {
   if (!article) return '/';
-  const categorySlug = (article.category || 'news').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+  const categorySlug = (article.category || 'news')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-');
   const articleSlug = article.slug || article.id;
   return `/${categorySlug}/${articleSlug}`;
 }
 
 export function getArticleByIdOrSlug(idOrSlug: string): Article | undefined {
   const data = getNewsData();
-  return data.allArticles.find(a => a.id === idOrSlug || a.slug === idOrSlug || a.id === `art-${idOrSlug}`) || data.leadStory;
+  return (
+    data.allArticles.find(
+      (a) => a.id === idOrSlug || a.slug === idOrSlug || a.id === `art-${idOrSlug}`
+    ) || data.leadStory
+  );
 }
 
 export function getArticlesByCategory(categorySlug: string): Article[] {
@@ -115,13 +127,12 @@ export function getArticlesByCategory(categorySlug: string): Article[] {
     return data.allArticles;
   }
 
-  // Exact or contains match on the category
   const slugUpper = categorySlug.toUpperCase();
-  
-  return data.allArticles.filter(a => 
-    a.category.toUpperCase() === slugUpper || 
-    slugUpper.includes(a.category.toUpperCase()) ||
-    a.category.toUpperCase().includes(slugUpper)
+  return data.allArticles.filter(
+    (a) =>
+      a.category.toUpperCase() === slugUpper ||
+      slugUpper.includes(a.category.toUpperCase()) ||
+      a.category.toUpperCase().includes(slugUpper)
   );
 }
 
@@ -131,15 +142,15 @@ export function getArticlesByDateRange(daysLimit: number, categorySlug?: string)
 
   if (categorySlug && categorySlug !== 'all') {
     const catUpper = categorySlug.toUpperCase();
-    filtered = filtered.filter(a => a.category.toUpperCase().includes(catUpper));
+    filtered = filtered.filter((a) => a.category.toUpperCase().includes(catUpper));
   }
 
   if (daysLimit > 0) {
     const now = new Date();
     const cutoffDate = new Date(now);
     cutoffDate.setDate(cutoffDate.getDate() - daysLimit);
-    
-    filtered = filtered.filter(a => {
+
+    filtered = filtered.filter((a) => {
       if (!a.date) return true;
       const articleDate = new Date(a.date);
       return articleDate >= cutoffDate;
@@ -149,4 +160,29 @@ export function getArticlesByDateRange(daysLimit: number, categorySlug?: string)
   return filtered;
 }
 
-// trigger reload
+// Client-side async hook / loader for dynamic live articles from database
+export async function fetchLiveNewsDataset(): Promise<NewsDataset> {
+  try {
+    const res = await fetch('/api/news', { cache: 'no-store' });
+    const json = await res.json();
+    if (json.success && json.data) {
+      return json.data as NewsDataset;
+    }
+  } catch (e) {
+    // fallback to static
+  }
+  return getNewsData();
+}
+
+export async function fetchLiveArticleBySlug(slug: string): Promise<Article | undefined> {
+  try {
+    const res = await fetch(`/api/news?slug=${encodeURIComponent(slug)}`, { cache: 'no-store' });
+    const json = await res.json();
+    if (json.success && json.article) {
+      return json.article as Article;
+    }
+  } catch (e) {
+    // fallback
+  }
+  return getArticleByIdOrSlug(slug);
+}

@@ -10,13 +10,21 @@ import VideoSection from '@/components/VideoSection';
 import LiveTVModal from '@/components/LiveTVModal';
 import SearchModal from '@/components/SearchModal';
 import Footer from '@/components/Footer';
-import { getNewsData, VideoItem, Article } from '@/lib/getNewsData';
+import { getNewsData, fetchLiveNewsDataset, VideoItem, Article, NewsDataset } from '@/lib/getNewsData';
 
 export default function HomePage() {
-  const newsData = getNewsData();
+  const [newsData, setNewsData] = useState<NewsDataset>(getNewsData());
   const [isLiveTVOpen, setIsLiveTVOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('home');
+
+  React.useEffect(() => {
+    const loadDynamic = async () => {
+      const data = await fetchLiveNewsDataset();
+      setNewsData(data);
+    };
+    loadDynamic();
+  }, []);
 
   const handlePlayVideo = (video: VideoItem) => {
     setIsLiveTVOpen(true);

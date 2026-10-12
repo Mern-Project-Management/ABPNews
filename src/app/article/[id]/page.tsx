@@ -10,7 +10,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LiveTVModal from '@/components/LiveTVModal';
 import SearchModal from '@/components/SearchModal';
-import { getNewsData, getArticleByIdOrSlug, getArticleUrl } from '@/lib/getNewsData';
+import { getNewsData, getArticleByIdOrSlug, getArticleUrl, fetchLiveArticleBySlug, Article, NewsDataset, fetchLiveNewsDataset } from '@/lib/getNewsData';
 
 interface ArticlePageProps {
  params: Promise<{ id: string }>;
@@ -18,8 +18,20 @@ interface ArticlePageProps {
 
 export default function ArticleDetailPage({ params }: ArticlePageProps) {
  const { id } = use(params);
- const newsData = getNewsData();
- const article = getArticleByIdOrSlug(id) || newsData.leadStory;
+ const [newsData, setNewsData] = useState<NewsDataset>(getNewsData());
+ const [article, setArticle] = useState<Article>(getArticleByIdOrSlug(id) || getNewsData().leadStory);
+
+ React.useEffect(() => {
+   const loadData = async () => {
+     const [liveData, liveArt] = await Promise.all([
+       fetchLiveNewsDataset(),
+       fetchLiveArticleBySlug(id),
+     ]);
+     if (liveData) setNewsData(liveData);
+     if (liveArt) setArticle(liveArt);
+   };
+   loadData();
+ }, [id]);
 
  const [copied, setCopied] = useState(false);
  const [fontSize, setFontSize] = useState<'sm' | 'base' | 'lg'>('base');
