@@ -48,12 +48,13 @@ export default function Header({ categories, ticker = [], tickerArticles = [], t
     // Dynamically load updated logo if configured in admin
     const loadDynamicLogo = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/settings');
+        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001';
+        const res = await fetch(`${adminUrl}/api/settings`);
         const data = await res.json();
         if (data.success && data.settings?.logoUrl) {
           // If local upload path on admin, route to admin origin
           const url = data.settings.logoUrl.startsWith('/uploads/')
-            ? `http://localhost:3001${data.settings.logoUrl}`
+            ? `${adminUrl}${data.settings.logoUrl}`
             : data.settings.logoUrl;
           setLogoUrl(url);
         }

@@ -9,6 +9,8 @@ import newsJson from '@/data/newsData.json';
 const _cat = Category;
 const _vid = Video;
 
+const ADMIN_ORIGIN = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -35,7 +37,7 @@ export async function GET(req: Request) {
 
         let image = singleDoc.image || '';
         if (image.startsWith('/uploads/')) {
-          image = `http://localhost:3001${image}`;
+          image = `${ADMIN_ORIGIN}${image}`;
         }
 
         return NextResponse.json(
@@ -87,7 +89,7 @@ export async function GET(req: Request) {
 
       let image = doc.image || '';
       if (image.startsWith('/uploads/')) {
-        image = `http://localhost:3001${image}`;
+        image = `${ADMIN_ORIGIN}${image}`;
       }
 
       return {
@@ -161,12 +163,12 @@ export async function GET(req: Request) {
       ? dbVideos.map((v: any) => {
           let videoUrl = v.videoUrl || '';
           if (videoUrl.startsWith('/uploads/')) {
-            videoUrl = `http://localhost:3001${videoUrl}`;
+            videoUrl = `${ADMIN_ORIGIN}${videoUrl}`;
           }
 
           let thumbnail = v.thumbnail || '';
           if (thumbnail.startsWith('/uploads/')) {
-            thumbnail = `http://localhost:3001${thumbnail}`;
+            thumbnail = `${ADMIN_ORIGIN}${thumbnail}`;
           } else if (!thumbnail && v.youtubeId) {
             thumbnail = `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`;
           }
