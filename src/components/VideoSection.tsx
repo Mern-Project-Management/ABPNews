@@ -41,45 +41,60 @@ export default function VideoSection({ videos, onPlayVideo }: VideoSectionProps)
             <div 
               key={item.id}
               onClick={() => onPlayVideo(item)}
-              className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-red-600 transition-all duration-300 group cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-1"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onPlayVideo(item);
+                }
+              }}
+              className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-red-600 transition-all duration-300 group cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-1 select-none flex flex-col justify-between"
             >
-              <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-                <img 
-                  src={item.thumbnail} 
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+              <div>
+                <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+                  <img 
+                    src={item.thumbnail} 
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors pointer-events-none" />
 
-                {/* PLAY BUTTON BADGE */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Play className="w-6 h-6 fill-current ml-0.5" />
+                  {/* PLAY BUTTON BADGE */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Play className="w-6 h-6 fill-current ml-0.5" />
+                    </div>
                   </div>
+
+                  {/* DURATION BADGE */}
+                  <span className="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-xs pointer-events-none">
+                    {item.duration}
+                  </span>
+
+                  {/* CATEGORY BADGE */}
+                  <span className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs pointer-events-none">
+                    {item.category}
+                  </span>
                 </div>
 
-                {/* DURATION BADGE */}
-                <span className="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
-                  {item.duration}
-                </span>
-
-                {/* CATEGORY BADGE */}
-                <span className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs">
-                  {item.category}
-                </span>
+                <div className="p-4 space-y-2">
+                  <h3 className="text-xs sm:text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2 leading-snug">
+                    {item.title}
+                  </h3>
+                </div>
               </div>
 
-              <div className="p-4 space-y-2">
-                <h3 className="text-xs sm:text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2 leading-snug">
-                  {item.title}
-                </h3>
-
-                <div className="flex items-center justify-between text-[11px] text-gray-500 pt-1 border-t border-gray-100 font-medium">
+              <div className="px-4 pb-4">
+                <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-100 font-medium">
                   <span className="flex items-center space-x-1">
                     <Eye className="w-3.5 h-3.5 text-gray-400" />
                     <span>{item.views}</span>
                   </span>
-                  <span className="text-red-600 font-bold group-hover:underline">Watch &rarr;</span>
+                  <span className="text-red-600 font-bold group-hover:underline flex items-center space-x-0.5">
+                    <span>Watch</span>
+                    <span>&rarr;</span>
+                  </span>
                 </div>
               </div>
             </div>
