@@ -41,9 +41,10 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
       {variant === 'grid' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {articles.slice(0, 4).map((item) => (
-            <div 
+            <Link 
               key={item.id} 
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex flex-col group"
+              href={getArticleUrl(item)}
+              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex flex-col group cursor-pointer block"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
                 <img 
@@ -63,11 +64,9 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
                     <span>{item.time}</span>
                   </span>
 
-                  <Link href={getArticleUrl(item)}>
-                    <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#E30613] transition-colors line-clamp-2 leading-snug">
-                      {item.title}
-                    </h3>
-                  </Link>
+                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#E30613] transition-colors line-clamp-2 leading-snug">
+                    {item.title}
+                  </h3>
 
                   <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
                     {item.summary}
@@ -76,15 +75,12 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
 
                 <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
                   <span className="font-semibold text-gray-700">{item.author}</span>
-                  <Link 
-                    href={getArticleUrl(item)}
-                    className="text-[#E30613] font-bold hover:underline"
-                  >
+                  <span className="text-[#E30613] font-bold group-hover:underline">
                     Read &rarr;
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
@@ -94,7 +90,10 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Main big item */}
           {articles[0] && (
-            <div className="lg:col-span-6 bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 group">
+            <Link 
+              href={getArticleUrl(articles[0])}
+              className="lg:col-span-6 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 group cursor-pointer block"
+            >
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-900">
                 <img 
                   src={articles[0].image} 
@@ -112,24 +111,23 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
                   <span>•</span>
                   <span>{articles[0].readTime}</span>
                 </div>
-                <Link href={getArticleUrl(articles[0])}>
-                  <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-[#E30613] transition-colors leading-snug">
-                    {articles[0].title}
-                  </h3>
-                </Link>
+                <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-[#E30613] transition-colors leading-snug">
+                  {articles[0].title}
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 line-clamp-3">
                   {articles[0].summary}
                 </p>
               </div>
-            </div>
+            </Link>
           )}
 
           {/* Right side list items */}
           <div className="lg:col-span-6 space-y-4">
             {articles.slice(1, 4).map((item) => (
-              <div 
+              <Link 
                 key={item.id} 
-                className="bg-white p-3 rounded-2xl shadow-sm border border-gray-200 flex items-center space-x-4 group hover:shadow-md transition-shadow"
+                href={getArticleUrl(item)}
+                className="bg-white p-3 rounded-2xl shadow-sm border border-gray-200 flex items-center space-x-4 group hover:shadow-md transition-shadow cursor-pointer block"
               >
                 <div className="w-24 h-20 sm:w-32 sm:h-24 rounded-xl overflow-hidden shrink-0 relative bg-gray-100">
                   <img 
@@ -142,16 +140,14 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
                   <span className="text-[10px] font-bold text-[#E30613] uppercase tracking-wider">
                     {item.category}
                   </span>
-                  <Link href={getArticleUrl(item)}>
-                    <h4 className="text-xs sm:text-sm font-bold text-gray-900 group-hover:text-[#E30613] transition-colors line-clamp-2 leading-snug">
-                      {item.title}
-                    </h4>
-                  </Link>
+                  <h4 className="text-xs sm:text-sm font-bold text-gray-900 group-hover:text-[#E30613] transition-colors line-clamp-2 leading-snug">
+                    {item.title}
+                  </h4>
                   <span className="text-[11px] text-gray-500 block pt-0.5">
                     {item.time}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

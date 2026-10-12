@@ -167,7 +167,7 @@ export function getArticlesByDateRange(daysLimit: number, categorySlug?: string)
 // Client-side async hook / loader for dynamic live articles from database
 export async function fetchLiveNewsDataset(): Promise<NewsDataset> {
   try {
-    const res = await fetch('/api/news', { cache: 'no-store' });
+    const res = await fetch(`/api/news?_t=${Date.now()}`, { cache: 'no-store' });
     const json = await res.json();
     if (json.success && json.data) {
       return json.data as NewsDataset;
@@ -180,7 +180,7 @@ export async function fetchLiveNewsDataset(): Promise<NewsDataset> {
 
 export async function fetchLiveArticleBySlug(slug: string): Promise<Article | undefined> {
   try {
-    const res = await fetch(`/api/news?slug=${encodeURIComponent(slug)}`, { cache: 'no-store' });
+    const res = await fetch(`/api/news?slug=${encodeURIComponent(slug)}&_t=${Date.now()}`, { cache: 'no-store' });
     const json = await res.json();
     if (json.success && json.article) {
       return json.article as Article;

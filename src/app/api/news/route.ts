@@ -36,28 +36,37 @@ export async function GET(req: Request) {
           image = `http://localhost:3001${image}`;
         }
 
-        return NextResponse.json({
-          success: true,
-          article: {
-            id: singleDoc._id.toString(),
-            title: singleDoc.title,
-            slug: singleDoc.slug,
-            link: `/${catName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/${singleDoc.slug}`,
-            image,
-            category: catName,
-            time: singleDoc.timeAgo || 'Just now',
-            author: singleDoc.author || 'Metrotimes Editor',
-            readTime: singleDoc.readTime || '3 min read',
-            summary: singleDoc.summary,
-            content: singleDoc.content || [],
-            date: singleDoc.publishedDate,
-            metaTitle: singleDoc.metaTitle,
-            metaDescription: singleDoc.metaDescription,
-            metaKeywords: singleDoc.metaKeywords,
-            canonicalUrl: singleDoc.canonicalUrl,
-            schemaScript: singleDoc.schemaScript,
+        return NextResponse.json(
+          {
+            success: true,
+            article: {
+              id: singleDoc._id.toString(),
+              title: singleDoc.title,
+              slug: singleDoc.slug,
+              link: `/${catName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/${singleDoc.slug}`,
+              image,
+              category: catName,
+              time: singleDoc.timeAgo || 'Just now',
+              author: singleDoc.author || 'Metrotimes Editor',
+              readTime: singleDoc.readTime || '3 min read',
+              summary: singleDoc.summary,
+              content: singleDoc.content || [],
+              date: singleDoc.publishedDate,
+              metaTitle: singleDoc.metaTitle,
+              metaDescription: singleDoc.metaDescription,
+              metaKeywords: singleDoc.metaKeywords,
+              canonicalUrl: singleDoc.canonicalUrl,
+              schemaScript: singleDoc.schemaScript,
+            },
           },
-        });
+          {
+            headers: {
+              'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+              Pragma: 'no-cache',
+              Expires: '0',
+            },
+          }
+        );
       }
     }
 
@@ -141,22 +150,31 @@ export async function GET(req: Request) {
     const sportsArticles = allArticles.filter((a: any) => a.category?.toLowerCase() === 'sports');
     const techArticles = allArticles.filter((a: any) => a.category?.toLowerCase() === 'technology');
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        ...newsJson,
-        categories: formattedCategories,
-        leadStory,
-        trendingNews: finalTrending.length > 0 ? finalTrending : newsJson.trendingNews,
-        allArticles,
-        breakingNews: finalBreaking,
-        newsArticles,
-        businessNews: bizArticles,
-        entertainmentNews: entArticles,
-        sportsNews: sportsArticles,
-        techNews: techArticles,
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          ...newsJson,
+          categories: formattedCategories,
+          leadStory,
+          trendingNews: finalTrending.length > 0 ? finalTrending : newsJson.trendingNews,
+          allArticles,
+          breakingNews: finalBreaking,
+          indiaNews: newsArticles.length > 0 ? newsArticles : formattedArticles.slice(0, 8),
+          businessNews: bizArticles.length > 0 ? bizArticles : formattedArticles.slice(0, 8),
+          entertainmentNews: entArticles.length > 0 ? entArticles : formattedArticles.slice(0, 8),
+          sportsNews: sportsArticles.length > 0 ? sportsArticles : formattedArticles.slice(0, 8),
+          techNews: techArticles.length > 0 ? techArticles : formattedArticles.slice(0, 8),
+        },
       },
-    });
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      }
+    );
   } catch (error: any) {
     console.error('Website news API error:', error);
     // Fallback to static JSON on DB error

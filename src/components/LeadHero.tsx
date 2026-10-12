@@ -144,19 +144,23 @@ export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
           {/* Grid of smaller stories (2 columns) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mt-6">
             {leftGridStories.map(item => (
-              <div key={item.id} className="group">
+              <Link 
+                key={item.id} 
+                href={getArticleUrl(item)} 
+                className="group flex flex-col cursor-pointer block"
+              >
                 <span className="text-[11px] font-bold text-[#E30613] uppercase tracking-wide block mb-1.5">
                   {item.category}
                 </span>
-                <Link href={getArticleUrl(item)} className="flex space-x-3 items-start">
+                <div className="flex space-x-3 items-start">
                   <div className="w-[100px] h-[65px] shrink-0 overflow-hidden rounded-sm bg-gray-100">
                     <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </div>
                   <h3 className="text-[15px] font-semibold text-[#004b79] group-hover:text-[#E30613] leading-snug line-clamp-3">
                     {item.title}
                   </h3>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -167,16 +171,18 @@ export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
           {/* Text List of stories */}
           <div className="space-y-5 pt-2">
             {rightTextStories.map(item => (
-              <div key={item.id} className="group">
+              <Link 
+                key={item.id} 
+                href={getArticleUrl(item)}
+                className="group cursor-pointer block"
+              >
                 <span className="text-[11px] font-bold text-[#E30613] uppercase tracking-wide block mb-1">
                   {item.category}
                 </span>
-                <Link href={getArticleUrl(item)}>
-                  <h3 className="text-[17px] font-semibold text-[#004b79] group-hover:text-[#E30613] leading-snug line-clamp-3">
-                    {item.title}
-                  </h3>
-                </Link>
-              </div>
+                <h3 className="text-[17px] font-semibold text-[#004b79] group-hover:text-[#E30613] leading-snug line-clamp-3">
+                  {item.title}
+                </h3>
+              </Link>
             ))}
           </div>
 
@@ -195,7 +201,11 @@ export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
             {/* Trending List */}
             <div className="space-y-4">
               {trendingNews.slice(0, 5).map((item, index) => (
-                <div key={item.id} className="flex items-start space-x-3 group border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                <Link 
+                  key={item.id} 
+                  href={getArticleUrl(item)}
+                  className="flex items-start space-x-3 group border-b border-gray-100 pb-4 last:border-0 last:pb-0 cursor-pointer block"
+                >
                   <span className="text-3xl font-bold text-gray-300 group-hover:text-[#E30613] transition-colors shrink-0 leading-none mt-1">
                     {index + 1}
                   </span>
@@ -203,13 +213,11 @@ export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
                     <span className="text-[10px] font-bold text-[#E30613] uppercase tracking-wide">
                       {item.category}
                     </span>
-                    <Link href={getArticleUrl(item)}>
-                      <h3 className="text-sm font-semibold text-[#004b79] group-hover:text-[#E30613] transition-colors leading-snug line-clamp-2">
-                        {item.title}
-                      </h3>
-                    </Link>
+                    <h3 className="text-sm font-semibold text-[#004b79] group-hover:text-[#E30613] transition-colors leading-snug line-clamp-2">
+                      {item.title}
+                    </h3>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

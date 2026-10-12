@@ -85,9 +85,10 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         {/* ARTICLES GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayArticles.map((item) => (
-            <div
+            <Link
               key={item.id}
-              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group"
+              href={getArticleUrl(item)}
+              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group cursor-pointer block"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 ">
                 <img
@@ -107,11 +108,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                     <span>{item.time}</span>
                   </span>
 
-                  <Link href={getArticleUrl(item)}>
-                    <h3 className="text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2 leading-snug">
-                      {item.title}
-                    </h3>
-                  </Link>
+                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2 leading-snug">
+                    {item.title}
+                  </h3>
 
                   <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
                     {item.summary}
@@ -120,15 +119,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
                 <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
                   <span className="font-semibold text-gray-600 ">{item.author}</span>
-                  <Link
-                    href={getArticleUrl(item)}
-                    className="text-red-600 font-bold hover:underline"
-                  >
+                  <span className="text-red-600 font-bold group-hover:underline">
                     Read &rarr;
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

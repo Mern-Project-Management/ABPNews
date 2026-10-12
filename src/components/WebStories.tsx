@@ -41,11 +41,11 @@ export default function WebStories({ stories }: WebStoriesProps) {
           <div className="p-1.5 bg-amber-500 text-gray-950 rounded-md">
             <Layers className="w-5 h-5" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white uppercase tracking-wider">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 uppercase tracking-wider">
             Web Stories
           </h2>
         </div>
-        <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800">
+        <span className="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
           Visual Highlights
         </span>
       </div>
