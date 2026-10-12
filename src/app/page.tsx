@@ -15,6 +15,7 @@ import { getNewsData, fetchLiveNewsDataset, VideoItem, Article, NewsDataset } fr
 export default function HomePage() {
   const [newsData, setNewsData] = useState<NewsDataset>(getNewsData());
   const [isLiveTVOpen, setIsLiveTVOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('home');
 
@@ -27,6 +28,7 @@ export default function HomePage() {
   }, []);
 
   const handlePlayVideo = (video: VideoItem) => {
+    setSelectedVideo(video);
     setIsLiveTVOpen(true);
   };
 
@@ -148,7 +150,11 @@ export default function HomePage() {
       {/* MODALS */}
       <LiveTVModal
         isOpen={isLiveTVOpen}
-        onClose={() => setIsLiveTVOpen(false)}
+        onClose={() => {
+          setIsLiveTVOpen(false);
+          setSelectedVideo(null);
+        }}
+        selectedVideo={selectedVideo}
       />
 
       <SearchModal

@@ -30,7 +30,9 @@ export interface VideoItem {
   thumbnail: string;
   views: string;
   category: string;
-  youtubeId: string;
+  youtubeId?: string;
+  sourceType?: 'youtube' | 'local';
+  videoUrl?: string;
 }
 
 export interface WebStory {

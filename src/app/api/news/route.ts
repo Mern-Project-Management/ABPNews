@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import News from '@/models/News';
 import Category from '@/models/Category';
+import Video from '@/models/Video';
 import newsJson from '@/data/newsData.json';
 
-// Ensure Category model is registered
+// Ensure Category and Video models are registered
 const _cat = Category;
+const _vid = Video;
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -150,6 +152,40 @@ export async function GET(req: Request) {
     const sportsArticles = allArticles.filter((a: any) => a.category?.toLowerCase() === 'sports');
     const techArticles = allArticles.filter((a: any) => a.category?.toLowerCase() === 'technology');
 
+    // Query active videos from MongoDB
+    const dbVideos = await Video.find({ isActive: true })
+      .sort({ order: 1, createdAt: -1 })
+      .lean();
+
+    const formattedVideos = dbVideos.length > 0
+      ? dbVideos.map((v: any) => {
+          let videoUrl = v.videoUrl || '';
+          if (videoUrl.startsWith('/uploads/')) {
+            videoUrl = `http://localhost:3001${videoUrl}`;
+          }
+
+          let thumbnail = v.thumbnail || '';
+          if (thumbnail.startsWith('/uploads/')) {
+            thumbnail = `http://localhost:3001${thumbnail}`;
+          } else if (!thumbnail && v.youtubeId) {
+            thumbnail = `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`;
+          }
+
+          return {
+            id: v._id.toString(),
+            title: v.title,
+            sourceType: v.sourceType || 'youtube',
+            videoUrl,
+            youtubeUrl: v.youtubeUrl || '',
+            youtubeId: v.youtubeId || '',
+            thumbnail: thumbnail || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=800&auto=format&fit=crop&q=60',
+            category: v.category || 'News',
+            duration: v.duration || '03:45',
+            views: v.views || '1.2K views',
+          };
+        })
+      : (newsJson.videos as any);
+
     return NextResponse.json(
       {
         success: true,
@@ -165,6 +201,7 @@ export async function GET(req: Request) {
           entertainmentNews: entArticles.length > 0 ? entArticles : formattedArticles.slice(0, 8),
           sportsNews: sportsArticles.length > 0 ? sportsArticles : formattedArticles.slice(0, 8),
           techNews: techArticles.length > 0 ? techArticles : formattedArticles.slice(0, 8),
+          videos: formattedVideos,
         },
       },
       {
