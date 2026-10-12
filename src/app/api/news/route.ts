@@ -94,8 +94,13 @@ export async function GET(req: Request) {
         date: doc.publishedDate,
         isFeatured: doc.isFeatured,
         isTrending: doc.isTrending,
+        isBreaking: doc.isBreaking || false,
       };
     });
+
+    // Breaking news articles (prioritize those marked isBreaking: true)
+    const breakingArticles = formattedArticles.filter((a: any) => a.isBreaking);
+    const finalBreaking = breakingArticles.length > 0 ? breakingArticles : formattedArticles.slice(0, 10);
 
     // Merge with JSON fallback articles if needed, giving top priority to dynamic MongoDB articles
     const allArticles = formattedArticles.length > 0 ? formattedArticles : (newsJson.allArticles as any);
@@ -144,6 +149,7 @@ export async function GET(req: Request) {
         leadStory,
         trendingNews: finalTrending.length > 0 ? finalTrending : newsJson.trendingNews,
         allArticles,
+        breakingNews: finalBreaking,
         newsArticles,
         businessNews: bizArticles,
         entertainmentNews: entArticles,

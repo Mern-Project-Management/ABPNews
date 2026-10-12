@@ -13,6 +13,7 @@ interface HeaderProps {
   categories: Category[];
   ticker?: string[];
   tickerArticles?: Article[];
+  tickerTitle?: string;
   marketTicker: MarketItem[];
   weatherData: WeatherItem[];
   onOpenLiveTV?: () => void;
@@ -23,7 +24,7 @@ interface HeaderProps {
 
 import { useRouter, usePathname } from 'next/navigation';
 
-export default function Header({ categories, ticker = [], tickerArticles = [], marketTicker, weatherData, onOpenLiveTV = () => { }, onOpenSearch = () => { }, activeCategory = '', onSelectCategory }: HeaderProps) {
+export default function Header({ categories, ticker = [], tickerArticles = [], tickerTitle, marketTicker, weatherData, onOpenLiveTV = () => { }, onOpenSearch = () => { }, activeCategory = '', onSelectCategory }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -79,8 +80,12 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
 
   const languages = ['English', 'हिंदी', 'मराठी', 'বাংলা', 'ગુજરાતી', 'ਪੰਜਾਬੀ', 'தமிழ்', 'తెలుగు'];
 
-  // Prepare top 5 articles for ticker
-  const displayTickerArticles = tickerArticles.slice(0, 5);
+  // Prepare articles for ticker
+  const displayTickerArticles = tickerArticles && tickerArticles.length > 0 ? tickerArticles.slice(0, 10) : [];
+  const currentTickerTitle = tickerTitle || 'BREAKING NEWS';
+
+  // Dynamic animation duration so speed stays consistent regardless of article count (7s per article, min 18s, max 45s)
+  const tickerDuration = Math.max(18, Math.min(45, (displayTickerArticles.length || 1) * 7.5));
 
   return (
     <header className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40 transition-colors">
@@ -142,24 +147,29 @@ export default function Header({ categories, ticker = [], tickerArticles = [], m
         </div>
       </div>
 
-      {/* 4. BREAKING NEWS TICKER */}
-      <div className="bg-gray-100 border-b border-gray-200 text-xs py-2 px-4 flex items-center overflow-hidden">
-        <div className="flex items-center space-x-2 shrink-0 bg-[#E30613] text-white px-2.5 py-1 rounded font-extrabold uppercase tracking-wider mr-3 z-10 shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-          <span>BREAKING NEWS</span>
-        </div>
+      {/* 4. BREAKING / TOP UPDATES TICKER */}
+      {displayTickerArticles.length > 0 && (
+        <div className="bg-gray-100 border-b border-gray-200 text-xs py-2 px-4 flex items-center overflow-hidden">
+          <div className="flex items-center space-x-2 shrink-0 bg-[#E30613] text-white px-2.5 py-1 rounded font-extrabold uppercase tracking-wider mr-3 z-10 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+            <span>{currentTickerTitle}</span>
+          </div>
 
-        <div className="relative overflow-hidden w-full h-5 flex items-center">
-          <div className="whitespace-nowrap flex space-x-8 animate-ticker">
-            {(displayTickerArticles.length > 0 ? displayTickerArticles.concat(displayTickerArticles) : []).map((art, index) => (
-              <Link key={`${art.id}-${index}`} href={getArticleUrl(art)} className="inline-flex items-center text-gray-900 font-semibold hover:text-[#E30613] transition-colors">
-                <span>{art.title}</span>
-                <span className="mx-4 text-red-600 font-black">•</span>
-              </Link>
-            ))}
+          <div className="relative overflow-hidden w-full h-5 flex items-center">
+            <div 
+              className="whitespace-nowrap flex space-x-8 animate-ticker hover:[animation-play-state:paused]"
+              style={{ animationDuration: `${tickerDuration}s` }}
+            >
+              {(displayTickerArticles.concat(displayTickerArticles)).map((art, index) => (
+                <Link key={`${art.id}-${index}`} href={getArticleUrl(art)} className="inline-flex items-center text-gray-900 font-semibold hover:text-[#E30613] transition-colors">
+                  <span>{art.title}</span>
+                  <span className="mx-4 text-red-600 font-black">•</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* MEGA MENU HAS BEEN REMOVED */}
 

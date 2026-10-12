@@ -43,6 +43,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       <Header
         categories={newsData.categories}
         ticker={newsData.ticker}
+        tickerArticles={
+          displayArticles.filter(a => a.isBreaking).length > 0
+            ? displayArticles.filter(a => a.isBreaking)
+            : displayArticles.length > 0 
+              ? displayArticles 
+              : (newsData.breakingNews && newsData.breakingNews.length > 0 ? newsData.breakingNews : newsData.allArticles)
+        }
+        tickerTitle={`${categoryName} ALERTS`}
         marketTicker={newsData.marketTicker}
         weatherData={newsData.weatherData}
         onOpenLiveTV={() => setIsLiveTVOpen(true)}

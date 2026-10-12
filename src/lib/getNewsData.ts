@@ -7,6 +7,9 @@ export interface Article {
   link: string;
   image: string;
   category: string;
+  isFeatured?: boolean;
+  isTrending?: boolean;
+  isBreaking?: boolean;
   date?: string;
   time: string;
   author: string;
@@ -86,6 +89,7 @@ export interface NewsDataset {
   editorsPicks?: Article[];
   topStories?: Article[];
   trendingNews: Article[];
+  breakingNews?: Article[];
   indiaNews: Article[];
   worldNews: Article[];
   sportsNews: Article[];

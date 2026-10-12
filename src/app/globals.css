@@ -47,11 +47,13 @@ body {
 .animate-ticker {
   display: inline-block;
   white-space: nowrap;
-  animation: ticker 35s linear infinite;
+  animation-name: ticker;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .animate-ticker:hover {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
 }
 
 @keyframes pulse-red {
