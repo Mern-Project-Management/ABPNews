@@ -153,11 +153,15 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             </div>
 
             {/* HERO IMAGE */}
-            <div className="rounded-xl overflow-hidden aspect-[16/9] bg-gray-100 shadow-sm relative">
+            <div className="rounded-xl overflow-hidden aspect-[16/9] bg-black shadow-sm relative">
+              <div 
+                className="absolute inset-0 bg-cover bg-center blur-xl opacity-30 scale-110 pointer-events-none"
+                style={{ backgroundImage: `url(${article.image})` }}
+              />
               <img 
                 src={article.image} 
                 alt={article.title} 
-                className="w-full h-full object-cover"
+                className="relative z-1 w-full h-full object-contain"
               />
             </div>
 

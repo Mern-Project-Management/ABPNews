@@ -65,13 +65,22 @@ export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
                     idx === currentIndex ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
                   }`}
                 >
-                  <Link href={getArticleUrl(story)} className="block w-full h-full relative group/link">
+                  <Link href={getArticleUrl(story)} className="block w-full h-full relative group/link bg-black overflow-hidden">
+                    {/* Blurred dynamic backdrop to fill 16:9 canvas cleanly */}
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center blur-xl opacity-40 scale-110 pointer-events-none"
+                      style={{ backgroundImage: `url(${story.image})` }}
+                    />
+                    
+                    {/* Full sharp image fitted without cropping or stretching */}
                     <img 
                       src={story.image} 
                       alt={story.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover/link:scale-105" 
+                      className="relative z-1 w-full h-full object-contain transition-transform duration-700 group-hover/link:scale-102" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-5 sm:p-7">
+
+                    {/* Gradient overlay for readable headline text */}
+                    <div className="absolute inset-0 z-2 bg-gradient-to-t from-black/95 via-black/35 to-transparent flex flex-col justify-end p-5 sm:p-7">
                       <span className="inline-block bg-[#E30613] text-white text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded w-max mb-2.5 shadow-sm">
                         {story.category || 'Lead Story'}
                       </span>

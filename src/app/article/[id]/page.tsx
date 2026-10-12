@@ -152,13 +152,17 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
  </div>
 
  {/* FEATURED IMAGE */}
- <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-gray-900 shadow-md">
+ <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black shadow-md">
+ <div 
+   className="absolute inset-0 bg-cover bg-center blur-xl opacity-30 scale-110 pointer-events-none"
+   style={{ backgroundImage: `url(${article.image})` }}
+ />
  <img 
  src={article.image} 
  alt={article.title}
- className="w-full h-full object-cover"
+ className="relative z-1 w-full h-full object-contain"
  />
- <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded">
+ <span className="absolute bottom-2 left-2 z-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded">
  Image Source: Metrotimes Media Desk
  </span>
  </div>
