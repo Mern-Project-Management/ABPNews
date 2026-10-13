@@ -44,7 +44,7 @@ export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: 
 
   const currentStory = slides[currentIndex] || leadStory;
 
-  // Combine trending and all articles to get up to 8 unique stories for the 2-column grid
+  // Combine trending and all articles to get up to 10 unique stories for the 2-column grid (5 rows of 2)
   const leftGridStories = React.useMemo(() => {
     const pool = [...trendingNews, ...allArticles];
     const seen = new Set<string>();
@@ -55,7 +55,7 @@ export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: 
       if (item && item.id && !seen.has(item.id)) {
         seen.add(item.id);
         result.push(item);
-        if (result.length >= 8) break;
+        if (result.length >= 10) break;
       }
     }
     return result;
