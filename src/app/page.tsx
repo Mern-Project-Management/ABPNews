@@ -69,6 +69,7 @@ export default function HomePage() {
               <LeadHero
                 leadStory={newsData.leadStory}
                 trendingNews={newsData.trendingNews}
+                allArticles={newsData.allArticles}
               />
 
               {/* 4. INDIA NEWS SECTION */}

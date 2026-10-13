@@ -7,9 +7,10 @@ import { Article, getArticleUrl } from '@/lib/getNewsData';
 interface LeadHeroProps {
   leadStory: Article;
   trendingNews: Article[];
+  allArticles?: Article[];
 }
 
-export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
+export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: LeadHeroProps) {
   // Build 4-5 distinct article slides
   const slides = React.useMemo(() => {
     const list = [leadStory, ...trendingNews];
@@ -42,7 +43,24 @@ export default function LeadHero({ leadStory, trendingNews }: LeadHeroProps) {
   }, [isPaused, slides.length, nextSlide]);
 
   const currentStory = slides[currentIndex] || leadStory;
-  const leftGridStories = trendingNews.filter(item => item.id !== currentStory?.id).slice(0, 4);
+
+  // Combine trending and all articles to get up to 8 unique stories for the 2-column grid
+  const leftGridStories = React.useMemo(() => {
+    const pool = [...trendingNews, ...allArticles];
+    const seen = new Set<string>();
+    if (currentStory?.id) seen.add(currentStory.id);
+
+    const result: Article[] = [];
+    for (const item of pool) {
+      if (item && item.id && !seen.has(item.id)) {
+        seen.add(item.id);
+        result.push(item);
+        if (result.length >= 8) break;
+      }
+    }
+    return result;
+  }, [trendingNews, allArticles, currentStory?.id]);
+
   const rightTextStories = trendingNews.slice(4, 9);
 
   return (
