@@ -156,11 +156,14 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             <div className="rounded-xl overflow-hidden aspect-[16/9] bg-black shadow-sm relative">
               <div 
                 className="absolute inset-0 bg-cover bg-center blur-xl opacity-30 scale-110 pointer-events-none"
-                style={{ backgroundImage: `url(${article.image})` }}
+                style={{ backgroundImage: `url(${article.image && !article.image.includes('abplive') ? article.image : '/metrotimes_default.png'})` }}
               />
               <img 
-                src={article.image} 
+                src={article.image && !article.image.includes('abplive') ? article.image : '/metrotimes_default.png'} 
                 alt={article.title} 
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                }}
                 className="relative z-1 w-full h-full object-contain"
               />
             </div>

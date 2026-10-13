@@ -61,7 +61,22 @@ export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: 
     return result;
   }, [trendingNews, allArticles, currentStory?.id]);
 
-  const rightTextStories = trendingNews.slice(4, 9);
+  const rightTextStories = trendingNews.slice(0, 3);
+
+  // Trending list of up to 8 ranked stories
+  const trendingDisplayStories = React.useMemo(() => {
+    const pool = [...trendingNews, ...allArticles];
+    const seen = new Set<string>();
+    const result: Article[] = [];
+    for (const item of pool) {
+      if (item && item.id && !seen.has(item.id)) {
+        seen.add(item.id);
+        result.push(item);
+        if (result.length >= 8) break;
+      }
+    }
+    return result;
+  }, [trendingNews, allArticles]);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-6 bg-white">
@@ -92,8 +107,11 @@ export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: 
                     
                     {/* Full sharp image fitted without cropping or stretching */}
                     <img 
-                      src={story.image} 
+                      src={story.image && !story.image.includes('abplive') ? story.image : '/metrotimes_default.png'} 
                       alt={story.title} 
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                      }}
                       className="relative z-1 w-full h-full object-contain transition-transform duration-700 group-hover/link:scale-102" 
                     />
 
@@ -172,7 +190,14 @@ export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: 
                 </span>
                 <div className="flex space-x-3 items-start">
                   <div className="w-[100px] h-[65px] shrink-0 overflow-hidden rounded-sm bg-gray-100">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img 
+                      src={item.image && !item.image.includes('abplive') ? item.image : '/metrotimes_default.png'} 
+                      alt={item.title} 
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                    />
                   </div>
                   <h3 className="text-[15px] font-semibold text-[#004b79] group-hover:text-[#E30613] leading-snug line-clamp-3">
                     {item.title}
@@ -218,11 +243,11 @@ export default function LeadHero({ leadStory, trendingNews, allArticles = [] }: 
             
             {/* Trending List */}
             <div className="space-y-4">
-              {trendingNews.slice(0, 5).map((item, index) => (
+              {trendingDisplayStories.slice(0, 8).map((item, index) => (
                 <Link 
                   key={item.id} 
                   href={getArticleUrl(item)}
-                  className="flex items-start space-x-3 group border-b border-gray-100 pb-4 last:border-0 last:pb-0 cursor-pointer block"
+                  className="flex items-start space-x-3 group border-b border-gray-100 pb-3 last:border-0 last:pb-0 cursor-pointer block"
                 >
                   <span className="text-3xl font-bold text-gray-300 group-hover:text-[#E30613] transition-colors shrink-0 leading-none mt-1">
                     {index + 1}

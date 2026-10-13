@@ -48,8 +48,11 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
                 <img 
-                  src={item.image} 
+                  src={item.image && !item.image.includes('abplive') ? item.image : '/metrotimes_default.png'} 
                   alt={item.title}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                  }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute top-3 left-3 bg-[#E30613] text-white font-bold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider shadow-sm">
@@ -96,8 +99,11 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-900">
                 <img 
-                  src={articles[0].image} 
+                  src={articles[0].image && !articles[0].image.includes('abplive') ? articles[0].image : '/metrotimes_default.png'} 
                   alt={articles[0].title}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                  }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute top-3 left-3 bg-[#E30613] text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase tracking-wider">
@@ -131,8 +137,11 @@ export default function NewsGrid({ title, categorySlug, articles, variant = 'gri
               >
                 <div className="w-24 h-20 sm:w-32 sm:h-24 rounded-xl overflow-hidden shrink-0 relative bg-gray-100">
                   <img 
-                    src={item.image} 
+                    src={item.image && !item.image.includes('abplive') ? item.image : '/metrotimes_default.png'} 
                     alt={item.title}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
