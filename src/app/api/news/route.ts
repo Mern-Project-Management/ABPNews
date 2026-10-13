@@ -36,8 +36,8 @@ export async function GET(req: Request) {
             : 'News';
 
         let image = singleDoc.image || '';
-        if (image.startsWith('/uploads/')) {
-          image = `${ADMIN_ORIGIN}${image}`;
+        if (image.startsWith('/uploads/') && process.env.NEXT_PUBLIC_ADMIN_URL && !process.env.NEXT_PUBLIC_ADMIN_URL.includes('localhost:3001')) {
+          image = `${process.env.NEXT_PUBLIC_ADMIN_URL}${image}`;
         }
 
         return NextResponse.json(
@@ -88,8 +88,8 @@ export async function GET(req: Request) {
           : 'News';
 
       let image = doc.image || '';
-      if (image.startsWith('/uploads/')) {
-        image = `${ADMIN_ORIGIN}${image}`;
+      if (image.startsWith('/uploads/') && process.env.NEXT_PUBLIC_ADMIN_URL && !process.env.NEXT_PUBLIC_ADMIN_URL.includes('localhost:3001')) {
+        image = `${process.env.NEXT_PUBLIC_ADMIN_URL}${image}`;
       }
 
       return {
