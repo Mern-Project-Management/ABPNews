@@ -102,55 +102,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
               </p>
             </div>
 
-            {/* AUTHOR & TIMESTAMP BAR */}
-            <div className="flex flex-wrap items-center justify-between border-y border-gray-100 py-3 gap-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                  Metrotimes
-                </div>
-                <div className="flex flex-col text-xs">
-                  <span className="font-extrabold text-gray-900">{article.author}</span>
-                  <span className="text-gray-500 flex items-center space-x-1 pt-0.5">
-                    <Clock className="w-3 h-3 text-red-500" />
-                    <span>Updated {article.time} • {article.readTime}</span>
-                  </span>
-                </div>
-              </div>
 
-              {/* ACTION BUTTONS */}
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg">
-                  <button 
-                    onClick={() => setFontSize('sm')} 
-                    className={`px-2 py-1 text-xs font-bold rounded ${fontSize === 'sm' ? 'bg-white shadow text-red-600' : 'text-gray-600'}`}
-                  >
-                    A-
-                  </button>
-                  <button 
-                    onClick={() => setFontSize('md')} 
-                    className={`px-2 py-1 text-xs font-bold rounded ${fontSize === 'md' ? 'bg-white shadow text-red-600' : 'text-gray-600'}`}
-                  >
-                    A
-                  </button>
-                  <button 
-                    onClick={() => setFontSize('lg')} 
-                    className={`px-2 py-1 text-xs font-bold rounded ${fontSize === 'lg' ? 'bg-white shadow text-red-600' : 'text-gray-600'}`}
-                  >
-                    A+
-                  </button>
-                </div>
-
-                <button 
-                  onClick={handleLike}
-                  className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
-                    hasLiked ? 'bg-red-50 border-red-200 text-red-600' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <ThumbsUp className="w-3.5 h-3.5" />
-                  <span>{likes}</span>
-                </button>
-              </div>
-            </div>
 
             {/* HERO IMAGE */}
             <div className="rounded-xl overflow-hidden aspect-[16/9] bg-black shadow-sm relative">
