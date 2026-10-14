@@ -36,8 +36,9 @@ export async function GET(req: Request) {
             : 'News';
 
         let image = singleDoc.image || '';
-        if (image.startsWith('/uploads/') && process.env.NEXT_PUBLIC_ADMIN_URL && !process.env.NEXT_PUBLIC_ADMIN_URL.includes('localhost:4032')) {
-          image = `${process.env.NEXT_PUBLIC_ADMIN_URL}${image}`;
+        // If image is relative /uploads/, leave it relative so website proxy forwards to admin
+        if (image && !image.startsWith('http') && !image.startsWith('/')) {
+          image = `/${image}`;
         }
 
         return NextResponse.json(
@@ -88,8 +89,8 @@ export async function GET(req: Request) {
           : 'News';
 
       let image = doc.image || '';
-      if (image.startsWith('/uploads/') && process.env.NEXT_PUBLIC_ADMIN_URL && !process.env.NEXT_PUBLIC_ADMIN_URL.includes('localhost:4032')) {
-        image = `${process.env.NEXT_PUBLIC_ADMIN_URL}${image}`;
+      if (image && !image.startsWith('http') && !image.startsWith('/')) {
+        image = `/${image}`;
       }
 
       return {
