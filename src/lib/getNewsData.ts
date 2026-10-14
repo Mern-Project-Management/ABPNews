@@ -104,6 +104,7 @@ export interface NewsDataset {
   podcasts: PodcastItem[];
 }
 
+
 export function getNewsData(): NewsDataset {
   return newsData as unknown as NewsDataset;
 }
