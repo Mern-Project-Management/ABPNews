@@ -105,7 +105,7 @@ export interface NewsDataset {
 }
 
 export function getNewsData(): NewsDataset {
-  return newsData as NewsDataset;
+  return newsData as unknown as NewsDataset;
 }
 
 export function getArticleUrl(article: Article): string {
