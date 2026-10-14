@@ -48,14 +48,11 @@ export default function Header({ categories, ticker = [], tickerArticles = [], t
     // Dynamically load updated logo if configured in admin
     const loadDynamicLogo = async () => {
       try {
-        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin.metrotimes.in';
-        const res = await fetch(`${adminUrl}/api/settings`);
+        const res = await fetch('/api/admin/settings');
         const data = await res.json();
         if (data.success && data.settings?.logoUrl) {
-          // If local upload path on admin, route to admin origin
-          const url = data.settings.logoUrl.startsWith('/uploads/')
-            ? `${adminUrl}${data.settings.logoUrl}`
-            : data.settings.logoUrl;
+          // If local upload path on admin, route through proxy /uploads/ or adminUrl
+          const url = data.settings.logoUrl;
           setLogoUrl(url);
         }
       } catch (err) {

@@ -107,15 +107,11 @@ export default function Footer({ categories }: FooterProps) {
   React.useEffect(() => {
     const loadDynamicSettings = async () => {
       try {
-        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin.metrotimes.in';
-        const res = await fetch(`${adminUrl}/api/settings`);
+        const res = await fetch('/api/admin/settings');
         const data = await res.json();
         if (data.success && data.settings) {
           if (data.settings.logoUrl) {
-            const url = data.settings.logoUrl.startsWith('/uploads/')
-              ? `${adminUrl}${data.settings.logoUrl}`
-              : data.settings.logoUrl;
-            setLogoUrl(url);
+            setLogoUrl(data.settings.logoUrl);
           }
           if (Array.isArray(data.settings.socialLinks) && data.settings.socialLinks.length > 0) {
             setSocialLinks(data.settings.socialLinks);
