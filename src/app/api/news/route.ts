@@ -9,7 +9,7 @@ import newsJson from '@/data/newsData.json';
 const _cat = Category;
 const _vid = Video;
 
-const ADMIN_ORIGIN = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:4032';
+const ADMIN_ORIGIN = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin.metrotimes.in';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

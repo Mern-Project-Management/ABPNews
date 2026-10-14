@@ -107,7 +107,7 @@ export default function Footer({ categories }: FooterProps) {
   React.useEffect(() => {
     const loadDynamicSettings = async () => {
       try {
-        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:4032';
+        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin.metrotimes.in';
         const res = await fetch(`${adminUrl}/api/settings`);
         const data = await res.json();
         if (data.success && data.settings) {
