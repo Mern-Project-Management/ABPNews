@@ -48,7 +48,7 @@ export default function Header({ categories, ticker = [], tickerArticles = [], t
     // Dynamically load updated logo if configured in admin
     const loadDynamicLogo = async () => {
       try {
-        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001';
+        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:4032';
         const res = await fetch(`${adminUrl}/api/settings`);
         const data = await res.json();
         if (data.success && data.settings?.logoUrl) {
