@@ -135,7 +135,14 @@ export default function Footer({ categories }: FooterProps) {
         {/* SECTION 1: BRAND COL */}
         <div className="space-y-3">
           <Link href="/" className="inline-block bg-white px-3 py-1.5 rounded shadow-sm hover:opacity-95 transition-opacity">
-            <img src={logoUrl} alt="Metrotimes" className="h-7 sm:h-8 max-w-[170px] w-auto object-contain" />
+            <img
+              src={logoUrl || '/logoupdate.png'}
+              alt="Metrotimes"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/logoupdate.png';
+              }}
+              className="h-7 sm:h-8 max-w-[170px] w-auto object-contain"
+            />
           </Link>
           <p className="text-xs text-gray-400 leading-relaxed">
             Metrotimes is India&apos;s leading digital news destination bringing real-time breaking news updates, political coverage, sports, entertainment, and ground reports.

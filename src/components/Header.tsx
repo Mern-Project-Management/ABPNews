@@ -110,8 +110,11 @@ export default function Header({ categories, ticker = [], tickerArticles = [], t
           {/* LOGO */}
           <Link href="/" className="shrink-0 flex items-center py-0.5">
             <img
-              src={logoUrl}
+              src={logoUrl || '/logoupdate.png'}
               alt="Metrotimes"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/logoupdate.png';
+              }}
               className="h-7 sm:h-8 md:h-[34px] w-auto max-w-[160px] sm:max-w-[180px] object-contain transition-opacity duration-150 hover:opacity-90"
             />
           </Link>
