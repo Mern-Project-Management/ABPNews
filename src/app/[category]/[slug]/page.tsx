@@ -105,36 +105,81 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
 
             {/* HERO IMAGE */}
-            <div className="rounded-xl overflow-hidden aspect-[16/9] bg-black shadow-sm relative">
-              <div 
-                className="absolute inset-0 bg-cover bg-center blur-xl opacity-30 scale-110 pointer-events-none"
-                style={{ backgroundImage: `url(${article.image && !article.image.includes('abplive') ? article.image : '/metrotimes_default.png'})` }}
-              />
-              <img 
-                src={article.image && !article.image.includes('abplive') ? article.image : '/metrotimes_default.png'} 
-                alt={article.title} 
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
-                }}
-                className="relative z-1 w-full h-full object-contain"
-              />
+            <div className="space-y-2">
+              <div className="rounded-xl overflow-hidden aspect-[16/9] bg-black shadow-sm relative">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center blur-xl opacity-30 scale-110 pointer-events-none"
+                  style={{ backgroundImage: `url(${article.image && !article.image.includes('abplive') ? article.image : '/metrotimes_default.png'})` }}
+                />
+                <img 
+                  src={article.image && !article.image.includes('abplive') ? article.image : '/metrotimes_default.png'} 
+                  alt={article.imageAlt || article.title} 
+                  title={article.imageTitle || article.title}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/metrotimes_default.png';
+                  }}
+                  className="relative z-1 w-full h-full object-contain"
+                />
+              </div>
+              {article.imageCaption && (
+                <p className="text-xs text-gray-500 italic pl-1 border-l-2 border-red-500">
+                  {article.imageCaption}
+                </p>
+              )}
             </div>
+
+            {/* OPTIONAL EMBEDDED VIDEO PLAYER */}
+            {article.videoUrl && (
+              <div className="space-y-2 pt-2">
+                <div className="rounded-xl overflow-hidden aspect-video bg-black shadow-md">
+                  {article.videoUrl.includes('youtube.com') || article.videoUrl.includes('youtu.be') ? (
+                    <iframe
+                      src={
+                        article.videoUrl.includes('watch?v=')
+                          ? article.videoUrl.replace('watch?v=', 'embed/')
+                          : article.videoUrl.includes('youtu.be/')
+                          ? `https://www.youtube.com/embed/${article.videoUrl.split('youtu.be/')[1]}`
+                          : article.videoUrl
+                      }
+                      title={article.videoCaption || article.title}
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video
+                      src={article.videoUrl}
+                      controls
+                      className="w-full h-full"
+                    />
+                  )}
+                </div>
+                {article.videoCaption && (
+                  <p className="text-xs text-gray-500 italic pl-1">
+                    {article.videoCaption}
+                  </p>
+                )}
+              </div>
+            )}
 
             {/* PARAGRAPH CONTENT */}
             <div className={`space-y-4 text-gray-800 font-normal leading-relaxed ${
               fontSize === 'sm' ? 'text-sm' : fontSize === 'lg' ? 'text-lg' : 'text-base'
             }`}>
               {article.content.map((paragraph, idx) => (
-                <p key={idx} dangerouslySetInnerHTML={{ __html: paragraph }} />
+                <div key={idx} dangerouslySetInnerHTML={{ __html: paragraph }} />
               ))}
             </div>
 
             {/* TAGS */}
-            <div className="pt-4 border-t border-gray-100 flex items-center space-x-2">
+            <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center gap-2">
               <span className="text-xs font-bold text-gray-500 uppercase">Tags:</span>
-              {['Metrotimes', article.category, 'Breaking News', 'Latest Updates'].map((tag) => (
+              {(article.tags && article.tags.trim()
+                ? article.tags.split(',').map((t) => t.trim()).filter(Boolean)
+                : ['Metrotimes', article.category, 'Breaking News', 'Latest Updates']
+              ).map((tag) => (
                 <span key={tag} className="text-xs font-medium bg-gray-100 hover:bg-red-50 text-gray-700 px-2.5 py-1 rounded-md">
-                  #{tag}
+                  #{tag.replace(/^#/, '')}
                 </span>
               ))}
             </div>

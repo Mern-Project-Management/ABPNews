@@ -18,7 +18,22 @@ export interface INews extends Document {
   isTrending: boolean;
   isBreaking?: boolean;
   status: 'draft' | 'published' | 'archived';
-  views: number;
+  // Extended fields
+  tags?: string;
+  sourceUrl?: string;
+  imageTitle?: string;
+  imageAlt?: string;
+  imageCaption?: string;
+  videoUrl?: string;
+  videoCaption?: string;
+  facebookShareUrl?: string;
+  twitterShareUrl?: string;
+  whatsappShareUrl?: string;
+  telegramShareUrl?: string;
+  linkedinShareUrl?: string;
+  instagramShareUrl?: string;
+  youtubeShareUrl?: string;
+  websiteShareUrl?: string;
   metaTitle?: string;
   metaDescription?: string;
   metaKeywords?: string;
@@ -51,6 +66,22 @@ const NewsSchema: Schema = new Schema(
     isBreaking: { type: Boolean, default: false },
     status: { type: String, enum: ['draft', 'published', 'archived'], default: 'published' },
     views: { type: Number, default: 0 },
+    // Extended fields
+    tags: { type: String, default: '' },
+    sourceUrl: { type: String, default: '' },
+    imageTitle: { type: String, default: '' },
+    imageAlt: { type: String, default: '' },
+    imageCaption: { type: String, default: '' },
+    videoUrl: { type: String, default: '' },
+    videoCaption: { type: String, default: '' },
+    facebookShareUrl: { type: String, default: '' },
+    twitterShareUrl: { type: String, default: '' },
+    whatsappShareUrl: { type: String, default: '' },
+    telegramShareUrl: { type: String, default: '' },
+    linkedinShareUrl: { type: String, default: '' },
+    instagramShareUrl: { type: String, default: '' },
+    youtubeShareUrl: { type: String, default: '' },
+    websiteShareUrl: { type: String, default: '' },
     metaTitle: { type: String, trim: true, default: '' },
     metaDescription: { type: String, trim: true, default: '' },
     metaKeywords: { type: String, trim: true, default: '' },
