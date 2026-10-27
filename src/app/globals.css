@@ -64,3 +64,25 @@ body {
 .animate-pulse-red {
   animation: pulse-red 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* In-Article Embedded Images & Captions */
+.article-inline-figure {
+  margin: 1.5rem 0;
+  width: 100%;
+}
+.article-inline-img {
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+}
+.article-inline-caption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  color: #64748b;
+  font-style: italic;
+  text-align: center;
+}
