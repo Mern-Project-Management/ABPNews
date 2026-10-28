@@ -86,3 +86,90 @@ body {
   font-style: italic;
   text-align: center;
 }
+
+/* Article Editorial Typography & Clean Alignment */
+.article-body {
+  font-size: 1.0625rem; /* 17px optimal reading size */
+  line-height: 1.8;
+  color: #1f2937;
+  letter-spacing: -0.011em;
+}
+
+.article-body p {
+  margin-bottom: 1.35rem;
+  line-height: 1.82;
+  color: #1f2937;
+}
+
+.article-body p:last-child {
+  margin-bottom: 0;
+}
+
+.article-body h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #0f172a;
+  margin-top: 2rem;
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.02em;
+}
+
+.article-body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #0f172a;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.015em;
+}
+
+.article-body strong, 
+.article-body b {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.article-body a {
+  color: #e30613;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: color 0.15s ease;
+  word-break: break-word;
+}
+
+.article-body a:hover {
+  color: #b91c1c;
+}
+
+.article-body ul {
+  list-style-type: disc;
+  padding-left: 1.4rem;
+  margin: 1.25rem 0;
+  space-y: 0.5rem;
+}
+
+.article-body ol {
+  list-style-type: decimal;
+  padding-left: 1.4rem;
+  margin: 1.25rem 0;
+  space-y: 0.5rem;
+}
+
+.article-body li {
+  margin-bottom: 0.45rem;
+  line-height: 1.75;
+}
+
+.article-body blockquote {
+  border-left: 4px solid #e30613;
+  padding: 0.6rem 0 0.6rem 1.25rem;
+  margin: 1.5rem 0;
+  background-color: #f8fafc;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: italic;
+  color: #334155;
+}
+

@@ -163,8 +163,8 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             )}
 
             {/* PARAGRAPH CONTENT */}
-            <div className={`space-y-4 text-gray-800 font-normal leading-relaxed ${
-              fontSize === 'sm' ? 'text-sm' : fontSize === 'lg' ? 'text-lg' : 'text-base'
+            <div className={`article-body font-normal ${
+              fontSize === 'sm' ? '!text-[15px]' : fontSize === 'lg' ? '!text-[19px]' : '!text-[17px]'
             }`}>
               {article.content.map((paragraph, idx) => (
                 <div key={idx} dangerouslySetInnerHTML={{ __html: paragraph }} />
