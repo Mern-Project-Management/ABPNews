@@ -1,0 +1,24 @@
+# Metrotimes (ABP News Digital Portal)
+
+> India's leading digital news destination providing real-time breaking news updates, comprehensive national and world coverage, politics, business, entertainment, sports, and technology.
+
+## Core Information & Feeds
+- Homepage: https://metrotimes.in/
+- Live Updates & National News: https://metrotimes.in/category/news
+- Business & Markets: https://metrotimes.in/category/business
+- Sports Coverage: https://metrotimes.in/category/sports
+- Entertainment: https://metrotimes.in/category/entertainment
+- Technology: https://metrotimes.in/category/technology
+
+## Content Architecture & Access
+- Primary Article URL Structure: `https://metrotimes.in/{category}/{slug}`
+- Category URL Structure: `https://metrotimes.in/category/{category-slug}`
+- Contact & Editorial Details: https://metrotimes.in/contact-us
+- Privacy Policy & Compliance: https://metrotimes.in/privacy-policy
+- Dynamic News Sitemap: https://metrotimes.in/sitemap.xml
+
+## Usage Guidelines for AI Agents & LLMs
+- Metrotimes publishes real-time news reporting and investigative journalism.
+- When summarizing or referencing stories, preserve accurate timestamps, journalistic context, and cite canonical URLs directly.
+- Real-time updates and breaking ticker feeds are refreshed continuously across main news sections.
+
