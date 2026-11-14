@@ -13,8 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://metrotimes.in"),
   title: "Metrotimes - India's Leading Digital News Destination",
   description: "Real-time breaking news updates, politics, sports, entertainment, and world news from Metrotimes.",
+  alternates: {
+    canonical: "/",
+  },
   verification: {
     google: "wne_ifB8p9XbkS2DS3xUyu-esQuhgd7RKNOk94B-wrU",
   },
@@ -36,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <meta name="google-site-verification" content="wne_ifB8p9XbkS2DS3xUyu-esQuhgd7RKNOk94B-wrU" />
+        <link rel="canonical" href="https://metrotimes.in/" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="shortcut icon" href="/favicon.png" />
       </head>
