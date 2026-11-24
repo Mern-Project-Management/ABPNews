@@ -64,3 +64,32 @@ body {
 .animate-pulse-red {
   animation: pulse-red 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Article content embedded images - Zero Cropping for tall, square and wide images */
+.article-content img,
+article img.article-embedded-image,
+article figure img {
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 650px !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.article-content figure,
+article figure {
+  margin: 1.5rem auto !important;
+  text-align: center !important;
+  max-width: 100% !important;
+}
+
+.article-content figcaption,
+article figcaption {
+  margin-top: 0.5rem !important;
+  font-size: 0.85rem !important;
+  color: #64748b !important;
+  font-style: italic !important;
+  text-align: center !important;
+}

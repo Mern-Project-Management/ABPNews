@@ -189,11 +189,11 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
  </div>
 
  {/* PARAGRAPH CONTENT */}
- <div className={`space-y-4 text-gray-800 font-normal leading-relaxed ${
+ <div className={`article-content space-y-4 text-gray-800 font-normal leading-relaxed ${
  fontSize === 'sm' ? 'text-sm' : fontSize === 'lg' ? 'text-lg' : 'text-base'
  }`}>
  {article.content.map((paragraph, idx) => (
- <p key={idx} dangerouslySetInnerHTML={{ __html: paragraph }} />
+ <div key={idx} className="leading-relaxed" dangerouslySetInnerHTML={{ __html: paragraph }} />
  ))}
  </div>
 
