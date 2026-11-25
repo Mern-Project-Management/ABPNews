@@ -148,6 +148,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
+      <link rel="canonical" href={canonicalUrl} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

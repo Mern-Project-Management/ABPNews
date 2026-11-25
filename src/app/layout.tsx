@@ -62,7 +62,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
@@ -85,14 +89,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <link rel="canonical" href="https://metrotimes.in" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="shortcut icon" href="/favicon.png" />
+      </head>
+      <body className="min-h-full flex flex-col bg-white text-gray-900">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-      </head>
-      <body className="min-h-full flex flex-col bg-white text-gray-900">{children}</body>
+        {children}
+      </body>
     </html>
   );
 }

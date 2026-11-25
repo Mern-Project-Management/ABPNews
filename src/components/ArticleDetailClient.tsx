@@ -38,7 +38,17 @@ export default function ArticleDetailClient({
       if (liveArt) setArticle(liveArt);
     };
     loadData();
-  }, [slug]);
+
+    // Ensure canonical tag and meta tags are present in DOM for client-side SEO inspectors
+    const canonicalHref = article?.canonicalUrl || `https://metrotimes.in/${category.toLowerCase()}/${slug.toLowerCase()}`;
+    let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = canonicalHref;
+  }, [slug, category, article?.canonicalUrl]);
 
   const [isLiveTVOpen, setIsLiveTVOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);

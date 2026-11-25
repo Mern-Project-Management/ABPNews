@@ -40,11 +40,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   const initialNewsData = getNewsData();
+  const canonicalUrl = `https://metrotimes.in/category/${slug.toLowerCase()}`;
 
   return (
-    <CategoryClient
-      slug={slug}
-      initialNewsData={initialNewsData}
-    />
+    <>
+      <link rel="canonical" href={canonicalUrl} />
+      <CategoryClient
+        slug={slug}
+        initialNewsData={initialNewsData}
+      />
+    </>
   );
 }

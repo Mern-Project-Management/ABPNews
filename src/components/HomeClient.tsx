@@ -28,6 +28,14 @@ export default function HomeClient({ initialNewsData }: HomeClientProps) {
       setNewsData(data);
     };
     loadDynamic();
+
+    let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = 'https://metrotimes.in';
   }, []);
 
   const handlePlayVideo = (video: VideoItem) => {

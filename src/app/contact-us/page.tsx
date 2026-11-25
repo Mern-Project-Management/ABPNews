@@ -29,5 +29,10 @@ export const metadata: Metadata = {
 
 export default function Page() {
   const newsData = getNewsData();
-  return <ContactUsClient newsData={newsData} />;
+  return (
+    <>
+      <link rel="canonical" href="https://metrotimes.in/contact-us" />
+      <ContactUsClient newsData={newsData} />
+    </>
+  );
 }
