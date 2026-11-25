@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow private/admin endpoints and API routes
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://metrotimes.in/sitemap.xml

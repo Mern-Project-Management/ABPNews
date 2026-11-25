@@ -9,7 +9,7 @@ import newsJson from '@/data/newsData.json';
 const _cat = Category;
 const _vid = Video;
 
-const ADMIN_ORIGIN = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:4032';
+const ADMIN_ORIGIN = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin.metrotimes.in';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -36,8 +36,9 @@ export async function GET(req: Request) {
             : 'News';
 
         let image = singleDoc.image || '';
-        if (image.startsWith('/uploads/') && process.env.NEXT_PUBLIC_ADMIN_URL && !process.env.NEXT_PUBLIC_ADMIN_URL.includes('localhost:4032')) {
-          image = `${process.env.NEXT_PUBLIC_ADMIN_URL}${image}`;
+        // If image is relative /uploads/, leave it relative so website proxy forwards to admin
+        if (image && !image.startsWith('http') && !image.startsWith('/')) {
+          image = `/${image}`;
         }
 
         return NextResponse.json(
@@ -56,6 +57,21 @@ export async function GET(req: Request) {
               summary: singleDoc.summary,
               content: singleDoc.content || [],
               date: singleDoc.publishedDate,
+              tags: singleDoc.tags || '',
+              sourceUrl: singleDoc.sourceUrl || '',
+              imageTitle: singleDoc.imageTitle || '',
+              imageAlt: singleDoc.imageAlt || '',
+              imageCaption: singleDoc.imageCaption || '',
+              videoUrl: singleDoc.videoUrl || '',
+              videoCaption: singleDoc.videoCaption || '',
+              facebookShareUrl: singleDoc.facebookShareUrl || '',
+              twitterShareUrl: singleDoc.twitterShareUrl || '',
+              whatsappShareUrl: singleDoc.whatsappShareUrl || '',
+              telegramShareUrl: singleDoc.telegramShareUrl || '',
+              linkedinShareUrl: singleDoc.linkedinShareUrl || '',
+              instagramShareUrl: singleDoc.instagramShareUrl || '',
+              youtubeShareUrl: singleDoc.youtubeShareUrl || '',
+              websiteShareUrl: singleDoc.websiteShareUrl || '',
               metaTitle: singleDoc.metaTitle,
               metaDescription: singleDoc.metaDescription,
               metaKeywords: singleDoc.metaKeywords,
@@ -88,8 +104,8 @@ export async function GET(req: Request) {
           : 'News';
 
       let image = doc.image || '';
-      if (image.startsWith('/uploads/') && process.env.NEXT_PUBLIC_ADMIN_URL && !process.env.NEXT_PUBLIC_ADMIN_URL.includes('localhost:4032')) {
-        image = `${process.env.NEXT_PUBLIC_ADMIN_URL}${image}`;
+      if (image && !image.startsWith('http') && !image.startsWith('/')) {
+        image = `/${image}`;
       }
 
       return {

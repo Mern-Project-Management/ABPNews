@@ -107,15 +107,11 @@ export default function Footer({ categories }: FooterProps) {
   React.useEffect(() => {
     const loadDynamicSettings = async () => {
       try {
-        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:4032';
-        const res = await fetch(`${adminUrl}/api/settings`);
+        const res = await fetch('/api/admin/settings');
         const data = await res.json();
         if (data.success && data.settings) {
           if (data.settings.logoUrl) {
-            const url = data.settings.logoUrl.startsWith('/uploads/')
-              ? `${adminUrl}${data.settings.logoUrl}`
-              : data.settings.logoUrl;
-            setLogoUrl(url);
+            setLogoUrl(data.settings.logoUrl);
           }
           if (Array.isArray(data.settings.socialLinks) && data.settings.socialLinks.length > 0) {
             setSocialLinks(data.settings.socialLinks);
@@ -139,7 +135,14 @@ export default function Footer({ categories }: FooterProps) {
         {/* SECTION 1: BRAND COL */}
         <div className="space-y-3">
           <Link href="/" className="inline-block bg-white px-3 py-1.5 rounded shadow-sm hover:opacity-95 transition-opacity">
-            <img src={logoUrl} alt="Metrotimes" className="h-7 sm:h-8 max-w-[170px] w-auto object-contain" />
+            <img
+              src={logoUrl || '/logoupdate.png'}
+              alt="Metrotimes"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/logoupdate.png';
+              }}
+              className="h-7 sm:h-8 max-w-[170px] w-auto object-contain"
+            />
           </Link>
           <p className="text-xs text-gray-400 leading-relaxed">
             Metrotimes is India&apos;s leading digital news destination bringing real-time breaking news updates, political coverage, sports, entertainment, and ground reports.
