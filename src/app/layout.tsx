@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://metrotimes.in",
   },
+  verification: {
+    google: "wne_ifB8p9XbkS2DS3xUyu-esQuhgd7RKNOk94B-wrU",
+  },
   robots: {
     index: true,
     follow: true,
@@ -89,6 +92,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <meta name="google-site-verification" content="wne_ifB8p9XbkS2DS3xUyu-esQuhgd7RKNOk94B-wrU" />
         <link rel="canonical" href="https://metrotimes.in" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="shortcut icon" href="/favicon.png" />
