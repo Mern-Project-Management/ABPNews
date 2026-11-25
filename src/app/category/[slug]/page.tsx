@@ -35,9 +35,25 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     return aCat === cUpper || aCat.includes(cUpper) || cUpper.includes(aCat);
   });
   const displayArticles = articles.length > 0 ? articles : newsData.allArticles.slice(0, 10);
+  const canonicalUrl = `https://metrotimes.in/category/${slug.toLowerCase()}`;
+  const pageTitle = `${categoryName} News - Latest Updates & Breaking Headlines | Metrotimes`;
+  const pageDesc = `Read the latest ${categoryName} news, breaking updates, live reports and top stories on Metrotimes.`;
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
+      <head>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+      </head>
 
       {/* HEADER */}
       <Header

@@ -10,6 +10,15 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans">
+      <head>
+        <title>Privacy Policy | Metrotimes</title>
+        <meta name="description" content="Metrotimes Privacy Policy - How we collect, use, and protect your personal information." />
+        <link rel="canonical" href="https://metrotimes.in/privacy-policy" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Privacy Policy | Metrotimes" />
+        <meta property="og:description" content="Metrotimes Privacy Policy." />
+        <meta property="og:url" content="https://metrotimes.in/privacy-policy" />
+      </head>
       <Header 
         categories={newsData.categories}
         ticker={newsData.ticker}

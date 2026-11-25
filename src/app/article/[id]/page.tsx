@@ -62,8 +62,66 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
  .filter(a => a.id !== article.id)
  .slice(0, 4);
 
+ const catSlug = article.category ? article.category.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'news';
+ const canonicalUrl = article.canonicalUrl || (article.slug ? `https://metrotimes.in/${catSlug}/${article.slug}` : `https://metrotimes.in/article/${id}`);
+ const pageTitle = article.metaTitle || `${article.title} | Metrotimes`;
+ const pageDesc = article.metaDescription || article.summary;
+
+ const articleSchema = {
+ "@context": "https://schema.org",
+ "@type": "NewsArticle",
+ "headline": article.title,
+ "description": article.summary,
+ "image": [article.image || "https://metrotimes.in/logoupdate.png"],
+ "datePublished": article.date || new Date().toISOString(),
+ "author": {
+ "@type": "Person",
+ "name": article.author || "Metrotimes Editor"
+ },
+ "publisher": {
+ "@type": "Organization",
+ "name": "Metrotimes",
+ "logo": {
+ "@type": "ImageObject",
+ "url": "https://metrotimes.in/logoupdate.png"
+ }
+ },
+ "mainEntityOfPage": {
+ "@type": "WebPage",
+ "@id": canonicalUrl
+ }
+ };
+
  return (
  <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
+ <head>
+ <title>{pageTitle}</title>
+ <meta name="description" content={pageDesc} />
+ <link rel="canonical" href={canonicalUrl} />
+ <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+ <meta property="og:title" content={pageTitle} />
+ <meta property="og:description" content={pageDesc} />
+ <meta property="og:url" content={canonicalUrl} />
+ <meta property="og:image" content={article.image || "https://metrotimes.in/logoupdate.png"} />
+ <meta property="og:type" content="article" />
+ <meta name="twitter:card" content="summary_large_image" />
+ <meta name="twitter:title" content={pageTitle} />
+ <meta name="twitter:description" content={pageDesc} />
+ <meta name="twitter:image" content={article.image || "https://metrotimes.in/logoupdate.png"} />
+ {article.schemaScript ? (
+ <script
+ type="application/ld+json"
+ dangerouslySetInnerHTML={{
+ __html: article.schemaScript.replace(/<\/?script[^>]*>/gi, '')
+ }}
+ />
+ ) : (
+ <script
+ type="application/ld+json"
+ dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+ />
+ )}
+ </head>
  
  {/* HEADER */}
  <Header 

@@ -18,6 +18,15 @@ export default function ContactUsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
+      <head>
+        <title>Contact Us | Metrotimes - Editorial & Press Office</title>
+        <meta name="description" content="Get in touch with Metrotimes newsroom, editorial team, press office, and advertising department." />
+        <link rel="canonical" href="https://metrotimes.in/contact-us" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Contact Us | Metrotimes" />
+        <meta property="og:description" content="Get in touch with Metrotimes newsroom, editorial team, and advertising department." />
+        <meta property="og:url" content="https://metrotimes.in/contact-us" />
+      </head>
       <Header 
         categories={newsData.categories}
         ticker={newsData.ticker}
