@@ -1,165 +1,50 @@
-'use client';
+import type { Metadata } from 'next';
+import CategoryClient from '@/components/CategoryClient';
+import { getNewsData } from '@/lib/getNewsData';
 
-import React, { useState, use } from 'react';
-import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import LiveTVModal from '@/components/LiveTVModal';
-import SearchModal from '@/components/SearchModal';
-import { getNewsData, getArticlesByCategory, getArticleUrl, fetchLiveNewsDataset, NewsDataset } from '@/lib/getNewsData';
-import { Clock, ChevronRight, Layers } from 'lucide-react';
-
-interface CategoryPageProps {
+interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const { slug } = use(params);
-  const [newsData, setNewsData] = useState<NewsDataset>(getNewsData());
-
-  React.useEffect(() => {
-    const loadData = async () => {
-      const liveData = await fetchLiveNewsDataset();
-      if (liveData) setNewsData(liveData);
-    };
-    loadData();
-  }, []);
-
-  const [isLiveTVOpen, setIsLiveTVOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const categoryName = (slug || 'india').toUpperCase();
-  const articles = newsData.allArticles.filter((a) => {
-    const cUpper = (slug || 'india').toUpperCase();
-    const aCat = (a.category || '').toUpperCase();
-    return aCat === cUpper || aCat.includes(cUpper) || cUpper.includes(aCat);
-  });
-  const displayArticles = articles.length > 0 ? articles : newsData.allArticles.slice(0, 10);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const categoryName = (slug || 'news').toUpperCase();
   const canonicalUrl = `https://metrotimes.in/category/${slug.toLowerCase()}`;
-  const pageTitle = `${categoryName} News - Latest Updates & Breaking Headlines | Metrotimes`;
-  const pageDesc = `Read the latest ${categoryName} news, breaking updates, live reports and top stories on Metrotimes.`;
+
+  return {
+    title: `${categoryName} News - Latest Updates & Breaking Headlines | Metrotimes`,
+    description: `Read the latest ${categoryName} news, breaking updates, live reports and top stories on Metrotimes.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    openGraph: {
+      title: `${categoryName} News | Metrotimes`,
+      description: `Latest breaking ${categoryName} news headlines on Metrotimes.`,
+      url: canonicalUrl,
+      type: 'website',
+    },
+  };
+}
+
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
+  const initialNewsData = getNewsData();
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
-      <head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDesc} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDesc} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDesc} />
-      </head>
-
-      {/* HEADER */}
-      <Header
-        categories={newsData.categories}
-        ticker={newsData.ticker}
-        tickerArticles={
-          displayArticles.filter(a => a.isBreaking).length > 0
-            ? displayArticles.filter(a => a.isBreaking)
-            : displayArticles.length > 0 
-              ? displayArticles 
-              : (newsData.breakingNews && newsData.breakingNews.length > 0 ? newsData.breakingNews : newsData.allArticles)
-        }
-        tickerTitle={`${categoryName} ALERTS`}
-        marketTicker={newsData.marketTicker}
-        weatherData={newsData.weatherData}
-        onOpenLiveTV={() => setIsLiveTVOpen(true)}
-        onOpenSearch={() => setIsSearchOpen(true)}
-      />
-
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full space-y-6">
-
-        {/* BREADCRUMB */}
-        <div className="flex items-center space-x-2 text-xs font-semibold text-gray-500 pb-3 border-b border-gray-200 ">
-          <Link href="/" className="hover:text-red-600">Home</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-gray-900 uppercase font-bold">{categoryName} News</span>
-        </div>
-
-        {/* TITLE BANNER */}
-        <div className="bg-gradient-to-r from-red-700 to-red-900 text-white p-6 sm:p-8 rounded-2xl shadow-lg flex items-center justify-between">
-          <div>
-            <span className="text-xs font-bold text-amber-300 uppercase tracking-widest block mb-1">
-              Category Coverage
-            </span>
-            <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight">
-              {categoryName} News
-            </h1>
-            <p className="text-xs sm:text-sm text-red-100 pt-1">
-              Latest breaking headlines, reports, and coverage on {categoryName} from Metrotimes.
-            </p>
-          </div>
-          <Layers className="w-12 h-12 text-red-400 opacity-60 hidden sm:block" />
-        </div>
-
-        {/* ARTICLES GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayArticles.map((item) => (
-            <Link
-              key={item.id}
-              href={getArticleUrl(item)}
-              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group cursor-pointer block"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 ">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <span className="absolute top-3 left-3 bg-red-600 text-white font-bold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">
-                  {item.category}
-                </span>
-              </div>
-
-              <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                <div className="space-y-2">
-                  <span className="text-[11px] text-gray-500 flex items-center space-x-1">
-                    <Clock className="w-3 h-3 text-red-500" />
-                    <span>{item.time}</span>
-                  </span>
-
-                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-red-600 transition-colors line-clamp-2 leading-snug">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                    {item.summary}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                  <span className="font-semibold text-gray-600 ">{item.author}</span>
-                  <span className="text-red-600 font-bold group-hover:underline">
-                    Read &rarr;
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-      </main>
-
-      {/* FOOTER & MODALS */}
-      <Footer categories={newsData.categories} />
-
-      <LiveTVModal
-        isOpen={isLiveTVOpen}
-        onClose={() => setIsLiveTVOpen(false)}
-      />
-
-      <SearchModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        articles={newsData.allArticles}
-      />
-
-    </div>
+    <CategoryClient
+      slug={slug}
+      initialNewsData={initialNewsData}
+    />
   );
 }
