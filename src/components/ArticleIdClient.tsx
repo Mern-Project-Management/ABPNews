@@ -36,7 +36,18 @@ export default function ArticleIdClient({
       if (liveArt) setArticle(liveArt);
     };
     loadData();
-  }, [id]);
+
+    const catSlug = article?.category ? article.category.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'news';
+    const rawCanonical = article?.canonicalUrl || (article?.slug ? `https://metrotimes.in/${catSlug}/${article.slug}` : `https://metrotimes.in/article/${id}`);
+    const canonicalHref = rawCanonical.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in');
+    let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = canonicalHref;
+  }, [id, article?.canonicalUrl, article?.slug, article?.category]);
 
   const [copied, setCopied] = useState(false);
   const [fontSize, setFontSize] = useState<'sm' | 'base' | 'lg'>('base');

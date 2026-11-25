@@ -25,7 +25,8 @@ export async function generateMetadata({
   const description = article?.metaDescription || article?.summary || "Read the latest news report on Metrotimes.";
   
   // Point to preferred clean canonical URL if article exists, otherwise standard /article/id
-  const canonicalUrl = article?.canonicalUrl || (article ? `https://metrotimes.in${getArticleUrl(article)}` : `https://metrotimes.in/article/${id}`);
+  const rawCanonical = article?.canonicalUrl || (article ? `https://metrotimes.in${getArticleUrl(article)}` : `https://metrotimes.in/article/${id}`);
+  const canonicalUrl = rawCanonical.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in');
 
   return {
     title,

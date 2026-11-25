@@ -75,7 +75,9 @@ export async function GET(req: Request) {
               metaTitle: singleDoc.metaTitle,
               metaDescription: singleDoc.metaDescription,
               metaKeywords: singleDoc.metaKeywords,
-              canonicalUrl: singleDoc.canonicalUrl,
+              canonicalUrl: singleDoc.canonicalUrl
+                ? singleDoc.canonicalUrl.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in')
+                : undefined,
               schemaScript: singleDoc.schemaScript,
             },
           },

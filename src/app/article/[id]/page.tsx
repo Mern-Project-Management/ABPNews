@@ -36,7 +36,9 @@ async function fetchArticleById(id: string): Promise<Article | null> {
         date: (doc as any).publishedDate,
         metaTitle: (doc as any).metaTitle,
         metaDescription: (doc as any).metaDescription,
-        canonicalUrl: (doc as any).canonicalUrl,
+        canonicalUrl: (doc as any).canonicalUrl
+          ? (doc as any).canonicalUrl.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in')
+          : undefined,
         schemaScript: (doc as any).schemaScript,
       };
     }
@@ -65,11 +67,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ? article.category.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     : 'news';
 
-  const canonicalUrl =
+  const rawCanonical =
     article?.canonicalUrl ||
     (article?.slug
       ? `https://metrotimes.in/${catSlug}/${article.slug}`
       : `https://metrotimes.in/article/${id}`);
+  const canonicalUrl = rawCanonical.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in');
 
   const imageUrl = article?.image || 'https://metrotimes.in/logoupdate.png';
 
@@ -115,11 +118,12 @@ export default async function Page({ params }: PageProps) {
     ? article.category.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     : 'news';
 
-  const canonicalUrl =
+  const rawCanonical =
     article?.canonicalUrl ||
     (article?.slug
       ? `https://metrotimes.in/${catSlug}/${article.slug}`
       : `https://metrotimes.in/article/${id}`);
+  const canonicalUrl = rawCanonical.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in');
 
   const articleSchema = {
     '@context': 'https://schema.org',

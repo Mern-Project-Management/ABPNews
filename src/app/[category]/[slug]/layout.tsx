@@ -23,7 +23,8 @@ export async function generateMetadata({
 
   const title = article?.metaTitle || article?.title || 'News Article - Metrotimes';
   const description = article?.metaDescription || article?.summary || "Read the latest news report on Metrotimes.";
-  const canonicalUrl = article?.canonicalUrl || `https://metrotimes.in/${category}/${slug}`;
+  const rawCanonical = article?.canonicalUrl || `https://metrotimes.in/${category.toLowerCase()}/${slug.toLowerCase()}`;
+  const canonicalUrl = rawCanonical.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in');
 
   return {
     title,

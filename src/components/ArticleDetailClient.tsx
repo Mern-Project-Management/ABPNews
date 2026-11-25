@@ -40,7 +40,8 @@ export default function ArticleDetailClient({
     loadData();
 
     // Ensure canonical tag and meta tags are present in DOM for client-side SEO inspectors
-    const canonicalHref = article?.canonicalUrl || `https://metrotimes.in/${category.toLowerCase()}/${slug.toLowerCase()}`;
+    const rawCanonical = article?.canonicalUrl || `https://metrotimes.in/${category.toLowerCase()}/${slug.toLowerCase()}`;
+    const canonicalHref = rawCanonical.replace(/https?:\/\/(www\.)?metrotimes\.com/gi, 'https://metrotimes.in');
     let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
     if (!link) {
       link = document.createElement('link');
