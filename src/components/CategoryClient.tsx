@@ -26,7 +26,19 @@ export default function CategoryClient({
       if (liveData) setNewsData(liveData);
     };
     loadData();
-  }, []);
+
+    // Ensure canonical tag is present in DOM for client-side SEO extension
+    const canonicalHref = `https://metrotimes.in/category/${slug.toLowerCase()}`;
+    let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    if (!link.href || link.href.includes('metrotimes.com')) {
+      link.href = canonicalHref;
+    }
+  }, [slug]);
 
   const [isLiveTVOpen, setIsLiveTVOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);

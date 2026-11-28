@@ -6,6 +6,11 @@ export interface ICategory extends Document {
   description?: string;
   parentId?: mongoose.Types.ObjectId | null;
   isActive: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  canonicalUrl?: string;
+  schemaScript?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,6 +22,11 @@ const CategorySchema: Schema = new Schema(
     description: { type: String, default: '' },
     parentId: { type: Schema.Types.ObjectId, ref: 'Category', default: null },
     isActive: { type: Boolean, default: true },
+    metaTitle: { type: String, default: '' },
+    metaDescription: { type: String, default: '' },
+    metaKeywords: { type: String, default: '' },
+    canonicalUrl: { type: String, default: '' },
+    schemaScript: { type: String, default: '' },
   },
   { timestamps: true }
 );
