@@ -5,5 +5,5 @@ Allow: /
 Disallow: /api/
 
 # Sitemaps
+Sitemap: https://metrotimes.in/sitemap_index.xml
 Sitemap: https://metrotimes.in/sitemap.xml
-

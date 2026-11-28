@@ -7,6 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/'],
     },
-    sitemap: 'https://metrotimes.in/sitemap.xml',
+    sitemap: [
+      'https://metrotimes.in/sitemap_index.xml',
+      'https://metrotimes.in/sitemap.xml',
+    ],
   };
 }
